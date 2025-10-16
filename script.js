@@ -4,7 +4,7 @@ let isPlaying = false;
 
 // YouTube livestream ID - Using a popular 24/7 lofi hip hop stream as placeholder
 // You can replace this with any YouTube video/livestream ID
-const YOUTUBE_VIDEO_ID = 'jfKfPfyJRdk'; // Lofi Girl - lofi hip hop radio
+const YOUTUBE_VIDEO_ID = 'rnXIjl_Rzy4';
 
 // ====================
 // PRIVY AUTHENTICATION & SUBSCRIPTION MANAGEMENT
@@ -344,7 +344,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Get DOM elements
     const playPauseBtn = document.getElementById('playPauseBtn');
     const volumeSlider = document.getElementById('volumeSlider');
-    const shareBtn = document.getElementById('shareBtn');
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
 
@@ -608,34 +607,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     volumeSlider.addEventListener('input', function() {
         if (player && player.setVolume) {
             player.setVolume(this.value);
-        }
-    });
-
-    // Share button
-    shareBtn.addEventListener('click', async function() {
-        const shareData = {
-            title: 'AURA RADIO - Live 24/7 Stream',
-            text: 'Check out this amazing radio station streaming live 24/7!',
-            url: window.location.href
-        };
-
-        try {
-            if (navigator.share) {
-                await navigator.share(shareData);
-            } else {
-                // Fallback: copy to clipboard
-                await navigator.clipboard.writeText(window.location.href);
-                showNotification('Link copied to clipboard!');
-            }
-        } catch (err) {
-            console.log('Share error:', err);
-            // Fallback: copy to clipboard
-            try {
-                await navigator.clipboard.writeText(window.location.href);
-                showNotification('Link copied to clipboard!');
-            } catch (clipboardErr) {
-                console.log('Clipboard error:', clipboardErr);
-            }
         }
     });
 
