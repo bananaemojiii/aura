@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA RADIO - Live 24/7 Stream</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">AURA RADIO</div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#schedule">Schedule</a>
+                <a href="#location">Location</a>
+                <a href="#support" class="nav-cta">Support</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about">About</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#location">Location</a>
+        <a href="#support">Support</a>
+    </div>
+
+    <!-- Hero Section with Livestream -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="status-badge">
+                <span class="live-dot"></span>
+                <span>LIVE NOW</span>
+            </div>
+            <h1 class="hero-title">Broadcasting Live 24/7</h1>
+            <p class="hero-subtitle">Independent online radio streaming the best music from around the world</p>
+        </div>
+        
+        <!-- Audio Player -->
+        <div class="player-container">
+            <div class="player-wrapper">
+                <div id="player"></div>
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" id="playPauseBtn">
+                    <svg id="playIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <svg id="pauseIcon" style="display: none;" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </button>
+                <div class="volume-control">
+                    <svg class="volume-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="50" class="volume-slider">
+                </div>
+                <div class="now-playing">
+                    <span class="now-playing-label">Now Playing:</span>
+                    <span class="now-playing-text" id="nowPlaying">Chillhop Radio - jazzy & lofi hip hop beats</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Share Button -->
+        <div class="share-section">
+            <button class="share-btn" id="shareBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+                Share the stream!
+            </button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2 class="section-title">About Aura Radio</h2>
+                <p class="about-text">
+                    We are an independent, non-profit, online radio station live streaming 24/7 from the heart of the city. 
+                    Expect a continuous stream of the best and most varied music, carefully curated to bring you the sounds that inspire.
+                </p>
+                <p class="about-text">
+                    Our mission is to create a space where music lovers can discover new artists, genres, and sounds from around the globe. 
+                    We believe in the power of music to connect communities and spark creativity.
+                </p>
+                <div class="about-cta">
+                    <a href="#support" class="btn btn-primary">Support Our Station</a>
+                    <a href="#schedule" class="btn btn-secondary">View Schedule</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Curated Music</h3>
+                    <p>Hand-picked tracks from emerging and established artists across all genres</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Global Reach</h3>
+                    <p>Broadcasting worldwide, connecting listeners from every corner of the globe</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Live Shows</h3>
+                    <p>Guest DJs and live performances bringing unique sounds and perspectives</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💜</div>
+                    <h3>Community Driven</h3>
+                    <p>Built by and for music lovers, supporting independent artists and culture</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="schedule-section">
+        <div class="container">
+            <h2 class="section-title">Weekly Schedule</h2>
+            <div class="schedule-grid">
+                <div class="schedule-item">
+                    <div class="schedule-day">Monday</div>
+                    <div class="schedule-show">
+                        <span class="show-time">12:00 AM - 6:00 AM</span>
+                        <span class="show-name">Midnight Groove</span>
+                    </div>
+                    <div class="schedule-show">
+                        <span class="show-time">6:00 AM - 12:00 PM</span>
+                        <span class="show-name">Morning Mix</span>
+                    </div>
+                    <div class="schedule-show">
+                        <span class="show-time">12:00 PM - 6:00 PM</span>
+                        <span class="show-name">Afternoon Vibes</span>
+                    </div>
+                    <div class="schedule-show">
+                        <span class="show-time">6:00 PM - 12:00 AM</span>
+                        <span class="show-name">Evening Sessions</span>
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-day">Tuesday - Thursday</div>
+                    <div class="schedule-description">
+                        Rotating guest DJs and special programming. Check our social media for daily updates.
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-day">Friday</div>
+                    <div class="schedule-description">
+                        Weekend warmup with extended sets and live performances.
+                    </div>
+                </div>
+                <div class="schedule-item">
+                    <div class="schedule-day">Saturday - Sunday</div>
+                    <div class="schedule-description">
+                        Special weekend programming featuring local and international artists.
+                    </div>
+                </div>
+            </div>
+            <div class="schedule-cta">
+                <p>Want to host a show?</p>
+                <button class="btn btn-primary">Submit Show Proposal</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="location" class="location-section">
+        <div class="container">
+            <div class="location-content">
+                <div class="location-info">
+                    <h2 class="section-title">Visit Us</h2>
+                    <div class="location-details">
+                        <h3>AURA RADIO STATION</h3>
+                        <p>Our space is open to the public where you can enjoy coffee, refreshments, and great music in a creative atmosphere.</p>
+                        <div class="location-hours">
+                            <p><strong>Hours:</strong> Everyday 10AM to Midnight</p>
+                            <p><strong>Location:</strong> Downtown Arts District</p>
+                        </div>
+                        <div class="location-amenities">
+                            <span class="amenity-tag">☕ Coffee</span>
+                            <span class="amenity-tag">🍷 Drinks</span>
+                            <span class="amenity-tag">🎵 Live Performances</span>
+                            <span class="amenity-tag">📻 Recording Studio</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="location-map">
+                    <div class="map-placeholder">
+                        <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <p>Map Location</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section id="support" class="support-section">
+        <div class="container">
+            <div class="support-content">
+                <h2 class="section-title">Support Aura Radio</h2>
+                <p class="support-text">
+                    As an independent, non-profit radio station, we rely on the support of our community to keep the music playing. 
+                    Your contributions help us maintain our equipment, pay our artists fairly, and continue bringing you quality programming 24/7.
+                </p>
+                <div class="support-options">
+                    <div class="support-card">
+                        <h3>One-Time Donation</h3>
+                        <p>Support us with a single contribution</p>
+                        <button class="btn btn-primary">Donate Now</button>
+                    </div>
+                    <div class="support-card featured">
+                        <h3>Monthly Supporter</h3>
+                        <p>Become a recurring supporter and get exclusive perks</p>
+                        <button class="btn btn-primary">Join Now</button>
+                    </div>
+                    <div class="support-card">
+                        <h3>Visit Our Shop</h3>
+                        <p>Get merch and support the station</p>
+                        <button class="btn btn-secondary">Shop Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AURA RADIO</h3>
+                    <p>Independent online radio streaming 24/7</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Links</h4>
+                    <a href="#about">About</a>
+                    <a href="#schedule">Schedule</a>
+                    <a href="#location">Location</a>
+                    <a href="#support">Support</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <a href="#">Instagram</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Facebook</a>
+                    <a href="#">Mixcloud</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="#">info@auraradio.com</a>
+                    <a href="#">Submit a Show</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Aura Radio. All rights reserved. Non-profit organization.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
