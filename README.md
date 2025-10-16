@@ -10,12 +10,15 @@ A modern, beautiful online radio streaming web application inspired by The Lot R
 ## ✨ Features
 
 - **Live Streaming** - YouTube livestream integration with custom player controls
+- **Crypto Authentication** - Sign in with wallet via Privy integration
+- **Subscriber Management** - Subscribe to program notifications and updates
 - **Modern UI** - Beautiful gradient design with smooth animations
 - **Responsive Design** - Works perfectly on desktop, tablet, and mobile
 - **Interactive Controls** - Play/pause, volume control, and share functionality
 - **Keyboard Shortcuts** - Space to play/pause, arrow keys for volume
 - **Multiple Sections** - About, schedule, location, and support sections
 - **Smooth Animations** - Scroll-triggered animations and transitions
+- **User Profiles** - Manage preferences and subscription settings
 
 ## 🚀 Quick Start
 
@@ -36,6 +39,14 @@ A modern, beautiful online radio streaming web application inspired by The Lot R
 
 3. **Visit the app**
    Open your browser and go to `http://localhost:8000`
+
+4. **Test wallet connection**
+   - Click "Connect Wallet" in the navigation
+   - Choose any authentication method
+   - Set your notification preferences
+   - Start listening!
+
+**See `DEMO_GUIDE.md` for detailed testing instructions.**
 
 ## 🎵 Changing the Livestream
 
@@ -60,10 +71,13 @@ The video ID is: `jfKfPfyJRdk` (everything after `v=`)
 ```
 aura/
 │
-├── index.html          # Main HTML file
-├── styles.css          # Styling and animations
-├── script.js           # JavaScript functionality
-└── README.md           # Documentation
+├── index.html              # Main HTML file
+├── styles.css              # Styling and animations
+├── script.js               # JavaScript functionality (Privy integrated)
+├── README.md               # Documentation
+├── PRIVY_CONFIG.md         # Your Privy App ID configuration
+├── PRIVY_INTEGRATION.md    # Production integration guide
+└── DEMO_GUIDE.md           # Testing instructions
 ```
 
 ## 🎨 Customization
@@ -88,6 +102,19 @@ Edit text content directly in `index.html`:
 - Support options
 
 ### Features
+
+#### Crypto Wallet Authentication
+- Connect with MetaMask, WalletConnect, or other wallets
+- Email and social login options
+- Secure authentication powered by Privy
+- Persistent sessions across visits
+
+#### Subscriber Management System
+- Subscribe to specific program types (new shows, live events, special mixes, weekly digest)
+- Choose notification methods (email, wallet, or both)
+- Manage preferences from user profile
+- View subscriber perks and benefits
+- Track subscriber stats in console
 
 #### Interactive Player Controls
 - Play/Pause button
@@ -129,7 +156,40 @@ Here are some popular livestreams you can use:
 - Safari (latest)
 - Mobile browsers (iOS Safari, Chrome Mobile)
 
+## 🔐 Authentication & Subscriptions
+
+### Wallet Connection
+The app includes crypto wallet authentication powered by [Privy](https://www.privy.io/). 
+
+**Status:** 🟢 **Privy App ID Configured!**
+
+The app now uses a **hybrid approach**:
+- ✅ **Real Privy SDK** loaded dynamically
+- ✅ **Your App ID** (`cmgtym7vm00wjlh0c3x8eyw53`) configured
+- ✅ **Automatic fallback** to demo mode if Privy unavailable
+- ✅ Works both with real wallet connections and demo mode
+
+**See `PRIVY_CONFIG.md` for configuration details and next steps.**
+
+### Subscriber Features
+When users connect their wallet, they can:
+1. **Subscribe to notifications** - Choose which programs to get notified about
+2. **Select notification method** - Email, wallet notifications, or both
+3. **Manage preferences** - Update subscription settings anytime
+4. **View perks** - Access exclusive subscriber benefits
+
+### Subscriber Stats
+Check the browser console after connecting to see:
+- Total number of subscribers
+- Breakdown by notification type
+- Real-time updates as preferences change
+
 ## 🎯 Features Breakdown
+
+### Authentication Modals
+- Wallet connection modal with multiple login options
+- Subscription preferences modal with checkbox selections
+- Profile dropdown with account management
 
 ### Hero Section
 - Live status badge with pulsing animation

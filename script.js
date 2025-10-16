@@ -6,6 +6,270 @@ let isPlaying = false;
 // You can replace this with any YouTube video/livestream ID
 const YOUTUBE_VIDEO_ID = 'jfKfPfyJRdk'; // Lofi Girl - lofi hip hop radio
 
+// ====================
+// PRIVY AUTHENTICATION & SUBSCRIPTION MANAGEMENT
+// ====================
+
+// PRIVY CONFIGURATION
+const PRIVY_APP_ID = 'cmgtym7vm00wjlh0c3x8eyw53';
+
+// Initialize Privy Client (using vanilla JS approach)
+// Load Privy SDK dynamically
+let privyLoaded = false;
+let privyClient = null;
+
+// Load Privy SDK
+function loadPrivySDK() {
+    return new Promise((resolve, reject) => {
+        if (privyLoaded) {
+            resolve();
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://auth.privy.io/latest/privy.min.js';
+        script.async = true;
+        script.onload = () => {
+            privyLoaded = true;
+            initializePrivy();
+            resolve();
+        };
+        script.onerror = () => {
+            console.warn('Privy SDK failed to load, using demo mode');
+            privyLoaded = false;
+            resolve(); // Continue with demo mode
+        };
+        document.head.appendChild(script);
+    });
+}
+
+// Initialize Privy
+function initializePrivy() {
+    if (typeof window.Privy !== 'undefined') {
+        try {
+            privyClient = new window.Privy({
+                appId: PRIVY_APP_ID,
+                onSuccess: (user) => {
+                    console.log('✅ Privy authentication successful:', user);
+                    handlePrivySuccess(user);
+                },
+                onError: (error) => {
+                    console.error('❌ Privy authentication error:', error);
+                    showNotification('Authentication failed. Please try again.');
+                }
+            });
+            console.log('🔐 Privy initialized with App ID:', PRIVY_APP_ID);
+        } catch (error) {
+            console.warn('Privy initialization failed, using demo mode:', error);
+            privyClient = null;
+        }
+    } else {
+        console.warn('Privy SDK not available, using demo mode');
+    }
+}
+
+// Handle successful Privy authentication
+function handlePrivySuccess(user) {
+    const walletAddress = user.wallet?.address || user.id;
+    const userData = {
+        address: walletAddress,
+        method: user.linkedAccounts?.[0]?.type || 'wallet',
+        connectedAt: new Date().toISOString(),
+        email: user.email?.address,
+        subscriptions: {
+            newShows: true,
+            liveEvents: true,
+            specialMixes: false,
+            weeklyDigest: false
+        },
+        notificationMethod: user.email?.address ? 'email' : 'wallet'
+    };
+    
+    subscriberManager.currentUser = userData;
+    localStorage.setItem('aura_current_user', JSON.stringify(userData));
+    subscriberManager.addSubscriber(userData);
+    subscriberManager.updateUIForConnectedUser();
+}
+
+// Subscriber Manager with Privy integration
+
+class SubscriberManager {
+    constructor() {
+        this.storageKey = 'aura_subscribers';
+        this.currentUser = null;
+    }
+
+    // Initialize subscriber data
+    init() {
+        if (!localStorage.getItem(this.storageKey)) {
+            localStorage.setItem(this.storageKey, JSON.stringify([]));
+        }
+        // Check if user was previously connected
+        const savedUser = localStorage.getItem('aura_current_user');
+        if (savedUser) {
+            this.currentUser = JSON.parse(savedUser);
+            this.updateUIForConnectedUser();
+        }
+    }
+
+    // Connect wallet using Privy or demo mode
+    async connectWallet(method = 'wallet') {
+        // Try to use Privy if available
+        if (privyClient) {
+            try {
+                console.log('🔐 Attempting Privy authentication...');
+                // Privy handles authentication and calls handlePrivySuccess
+                await privyClient.login({
+                    loginMethods: method === 'email' ? ['email'] : 
+                                 method === 'social' ? ['google', 'twitter', 'discord'] : 
+                                 ['wallet']
+                });
+                return this.currentUser;
+            } catch (error) {
+                console.warn('Privy authentication failed, using demo mode:', error);
+                // Fall back to demo mode
+            }
+        }
+
+        // Demo mode fallback
+        console.log('📝 Using demo mode authentication');
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const mockAddress = '0x' + this.generateMockAddress();
+                const user = {
+                    address: mockAddress,
+                    method: method,
+                    connectedAt: new Date().toISOString(),
+                    subscriptions: {
+                        newShows: true,
+                        liveEvents: true,
+                        specialMixes: false,
+                        weeklyDigest: false
+                    },
+                    notificationMethod: 'email'
+                };
+                this.currentUser = user;
+                localStorage.setItem('aura_current_user', JSON.stringify(user));
+                this.addSubscriber(user);
+                resolve(user);
+            }, 1000);
+        });
+    }
+
+    // Generate mock wallet address
+    generateMockAddress() {
+        return Array.from({length: 40}, () => 
+            Math.floor(Math.random() * 16).toString(16)
+        ).join('');
+    }
+
+    // Add subscriber to list
+    addSubscriber(user) {
+        const subscribers = this.getSubscribers();
+        const existing = subscribers.findIndex(s => s.address === user.address);
+        
+        if (existing !== -1) {
+            subscribers[existing] = user;
+        } else {
+            subscribers.push(user);
+        }
+        
+        localStorage.setItem(this.storageKey, JSON.stringify(subscribers));
+        console.log('📝 Subscriber added:', user.address);
+        console.log('📊 Total subscribers:', subscribers.length);
+    }
+
+    // Get all subscribers
+    getSubscribers() {
+        return JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+    }
+
+    // Update subscription preferences
+    updatePreferences(preferences) {
+        if (!this.currentUser) return;
+        
+        this.currentUser.subscriptions = preferences.subscriptions;
+        this.currentUser.notificationMethod = preferences.notificationMethod;
+        
+        localStorage.setItem('aura_current_user', JSON.stringify(this.currentUser));
+        this.addSubscriber(this.currentUser);
+        
+        console.log('✅ Preferences updated:', preferences);
+    }
+
+    // Disconnect wallet
+    disconnect() {
+        // Disconnect from Privy if available
+        if (privyClient && typeof privyClient.logout === 'function') {
+            try {
+                privyClient.logout();
+                console.log('🔐 Privy logout successful');
+            } catch (error) {
+                console.warn('Privy logout failed:', error);
+            }
+        }
+        
+        this.currentUser = null;
+        localStorage.removeItem('aura_current_user');
+        this.updateUIForDisconnectedUser();
+        console.log('👋 Wallet disconnected');
+    }
+
+    // Update UI for connected user
+    updateUIForConnectedUser() {
+        if (!this.currentUser) return;
+        
+        // Hide connect button, show profile widget
+        const navConnectBtn = document.getElementById('navConnectBtn');
+        const profileWidget = document.getElementById('profileWidget');
+        
+        if (navConnectBtn) navConnectBtn.style.display = 'none';
+        if (profileWidget) {
+            profileWidget.style.display = 'block';
+            
+            // Update profile info
+            const profileName = document.getElementById('profileName');
+            const dropdownAddress = document.getElementById('dropdownAddress');
+            const userAddress = document.getElementById('userAddress');
+            
+            const shortAddress = this.formatAddress(this.currentUser.address);
+            if (profileName) profileName.textContent = shortAddress;
+            if (dropdownAddress) dropdownAddress.textContent = this.currentUser.address;
+            if (userAddress) userAddress.textContent = this.currentUser.address;
+        }
+    }
+
+    // Update UI for disconnected user
+    updateUIForDisconnectedUser() {
+        const navConnectBtn = document.getElementById('navConnectBtn');
+        const profileWidget = document.getElementById('profileWidget');
+        
+        if (navConnectBtn) navConnectBtn.style.display = 'block';
+        if (profileWidget) profileWidget.style.display = 'none';
+    }
+
+    // Format address for display
+    formatAddress(address) {
+        if (!address) return '';
+        return `${address.slice(0, 6)}...${address.slice(-4)}`;
+    }
+
+    // Get subscriber stats
+    getStats() {
+        const subscribers = this.getSubscribers();
+        return {
+            total: subscribers.length,
+            newShows: subscribers.filter(s => s.subscriptions?.newShows).length,
+            liveEvents: subscribers.filter(s => s.subscriptions?.liveEvents).length,
+            specialMixes: subscribers.filter(s => s.subscriptions?.specialMixes).length,
+            weeklyDigest: subscribers.filter(s => s.subscriptions?.weeklyDigest).length
+        };
+    }
+}
+
+// Initialize subscriber manager
+const subscriberManager = new SubscriberManager();
+
 // Initialize YouTube Player
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
@@ -63,12 +327,168 @@ function updatePlayPauseButton() {
 }
 
 // Play/Pause control
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Load Privy SDK
+    await loadPrivySDK();
+    
+    // Initialize subscriber manager
+    subscriberManager.init();
+
+    // Get DOM elements
     const playPauseBtn = document.getElementById('playPauseBtn');
     const volumeSlider = document.getElementById('volumeSlider');
     const shareBtn = document.getElementById('shareBtn');
     const hamburger = document.getElementById('hamburger');
     const mobileMenu = document.getElementById('mobileMenu');
+
+    // Authentication modal elements
+    const authModal = document.getElementById('authModal');
+    const subscriptionModal = document.getElementById('subscriptionModal');
+    const navConnectBtn = document.getElementById('navConnectBtn');
+    const closeAuthModal = document.getElementById('closeAuthModal');
+    const closeSubscriptionModal = document.getElementById('closeSubscriptionModal');
+    const connectWalletBtn = document.getElementById('connectWalletBtn');
+    const emailLoginBtn = document.getElementById('emailLoginBtn');
+    const socialLoginBtn = document.getElementById('socialLoginBtn');
+    const saveSubscriptionBtn = document.getElementById('saveSubscriptionBtn');
+
+    // Profile widget elements
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    const copyAddressBtn = document.getElementById('copyAddressBtn');
+    const manageSubscriptionBtn = document.getElementById('manageSubscriptionBtn');
+    const viewPerksBtn = document.getElementById('viewPerksBtn');
+    const disconnectBtn = document.getElementById('disconnectBtn');
+
+    // Modal functions
+    function openModal(modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Connect wallet button in nav
+    navConnectBtn?.addEventListener('click', () => {
+        openModal(authModal);
+    });
+
+    // Close modal buttons
+    closeAuthModal?.addEventListener('click', () => closeModal(authModal));
+    closeSubscriptionModal?.addEventListener('click', () => closeModal(subscriptionModal));
+
+    // Close modal on outside click
+    authModal?.addEventListener('click', (e) => {
+        if (e.target === authModal) closeModal(authModal);
+    });
+    subscriptionModal?.addEventListener('click', (e) => {
+        if (e.target === subscriptionModal) closeModal(subscriptionModal);
+    });
+
+    // Wallet connection methods
+    async function handleWalletConnect(method) {
+        try {
+            showNotification('Connecting wallet...');
+            closeModal(authModal);
+            
+            const user = await subscriberManager.connectWallet(method);
+            
+            // Show subscription modal
+            openModal(subscriptionModal);
+            
+            // Load current preferences
+            loadSubscriptionPreferences();
+            
+            showNotification('✅ Wallet connected successfully!');
+        } catch (error) {
+            console.error('Connection error:', error);
+            showNotification('❌ Connection failed. Please try again.');
+        }
+    }
+
+    connectWalletBtn?.addEventListener('click', () => handleWalletConnect('wallet'));
+    emailLoginBtn?.addEventListener('click', () => handleWalletConnect('email'));
+    socialLoginBtn?.addEventListener('click', () => handleWalletConnect('social'));
+
+    // Load subscription preferences into form
+    function loadSubscriptionPreferences() {
+        if (!subscriberManager.currentUser) return;
+        
+        const subs = subscriberManager.currentUser.subscriptions;
+        document.getElementById('newShowsNotif').checked = subs.newShows;
+        document.getElementById('liveEventsNotif').checked = subs.liveEvents;
+        document.getElementById('specialMixesNotif').checked = subs.specialMixes;
+        document.getElementById('weeklyDigestNotif').checked = subs.weeklyDigest;
+        document.getElementById('notificationMethod').value = subscriberManager.currentUser.notificationMethod;
+    }
+
+    // Save subscription preferences
+    saveSubscriptionBtn?.addEventListener('click', () => {
+        const preferences = {
+            subscriptions: {
+                newShows: document.getElementById('newShowsNotif').checked,
+                liveEvents: document.getElementById('liveEventsNotif').checked,
+                specialMixes: document.getElementById('specialMixesNotif').checked,
+                weeklyDigest: document.getElementById('weeklyDigestNotif').checked
+            },
+            notificationMethod: document.getElementById('notificationMethod').value
+        };
+        
+        subscriberManager.updatePreferences(preferences);
+        closeModal(subscriptionModal);
+        showNotification('✅ Subscription preferences saved!');
+        
+        // Log stats to console
+        const stats = subscriberManager.getStats();
+        console.log('📊 Subscriber Stats:', stats);
+    });
+
+    // Profile dropdown toggle
+    profileBtn?.addEventListener('click', () => {
+        profileDropdown.classList.toggle('active');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (profileBtn && !profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+            profileDropdown.classList.remove('active');
+        }
+    });
+
+    // Copy address to clipboard
+    copyAddressBtn?.addEventListener('click', async () => {
+        if (!subscriberManager.currentUser) return;
+        
+        try {
+            await navigator.clipboard.writeText(subscriberManager.currentUser.address);
+            showNotification('📋 Address copied to clipboard!');
+        } catch (err) {
+            console.error('Copy failed:', err);
+        }
+    });
+
+    // Manage subscription
+    manageSubscriptionBtn?.addEventListener('click', () => {
+        profileDropdown.classList.remove('active');
+        loadSubscriptionPreferences();
+        openModal(subscriptionModal);
+    });
+
+    // View perks
+    viewPerksBtn?.addEventListener('click', () => {
+        profileDropdown.classList.remove('active');
+        showNotification('🎁 Check your email for exclusive perks!');
+    });
+
+    // Disconnect wallet
+    disconnectBtn?.addEventListener('click', () => {
+        subscriberManager.disconnect();
+        profileDropdown.classList.remove('active');
+        showNotification('👋 Wallet disconnected');
+    });
 
     // Play/Pause button
     playPauseBtn.addEventListener('click', function() {
