@@ -158,16 +158,16 @@ body {
 
 /* Hero Section */
 .hero {
-    min-height: calc(100vh - 100px);
+    min-height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 6rem 2rem 4rem;
+    padding: 6rem 2rem 2rem;
     background: linear-gradient(180deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
     position: relative;
     overflow: hidden;
-    margin-top: -100px;
+    margin-top: -40px;
 }
 
 .hero::before {
@@ -242,7 +242,7 @@ body {
 .player-container {
     width: 100%;
     max-width: 900px;
-    margin: 0 auto 20px;
+    margin: 0 auto;
     z-index: 1;
 }
 
@@ -254,7 +254,7 @@ body {
     overflow: visible;
     border-radius: 16px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
     border: 1px solid var(--border-color);
     background: #000;
 }
