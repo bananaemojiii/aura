@@ -14,40 +14,82 @@
     <div class="modal" id="authModal">
         <div class="modal-content">
             <button class="modal-close" id="closeAuthModal">&times;</button>
-            <h2>Connect Your Wallet</h2>
-            <p class="modal-subtitle">Sign in with your crypto wallet to subscribe to exclusive program updates</p>
             
-            <div class="wallet-options">
-                <button class="wallet-btn" id="connectWalletBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                    </svg>
-                    <span>Connect Wallet</span>
-                </button>
+            <!-- Main Auth Options View -->
+            <div id="authOptionsView">
+                <h2>Connect Your Wallet</h2>
+                <p class="modal-subtitle">Sign in with your crypto wallet to subscribe to exclusive program updates</p>
                 
-                <button class="wallet-btn" id="emailLoginBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                        <polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
-                    <span>Sign in with Email</span>
-                </button>
+                <div class="wallet-options">
+                    <button class="wallet-btn" id="connectWalletBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                        </svg>
+                        <span>Connect Wallet</span>
+                    </button>
+                    
+                    <button class="wallet-btn" id="emailLoginBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <span>Sign in with Email</span>
+                    </button>
+                    
+                    <button class="wallet-btn" id="socialLoginBtn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <circle cx="12" cy="10" r="3"></circle>
+                            <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path>
+                        </svg>
+                        <span>Social Login</span>
+                    </button>
+                </div>
                 
-                <button class="wallet-btn" id="socialLoginBtn">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <circle cx="12" cy="10" r="3"></circle>
-                        <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path>
-                    </svg>
-                    <span>Social Login</span>
-                </button>
+                <div class="auth-info">
+                    <p>✓ Secure & Private</p>
+                    <p>✓ No Credit Card Required</p>
+                    <p>✓ Powered by Privy</p>
+                </div>
             </div>
-            
-            <div class="auth-info">
-                <p>✓ Secure & Private</p>
-                <p>✓ No Credit Card Required</p>
-                <p>✓ Powered by Privy</p>
+
+            <!-- Email Login Form View -->
+            <div id="emailFormView" style="display: none;">
+                <button class="back-btn" id="backToOptions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back
+                </button>
+                <h2>Sign in with Email</h2>
+                <p class="modal-subtitle">Enter your email to receive a magic link</p>
+                
+                <form id="emailLoginForm" class="email-form">
+                    <div class="form-group">
+                        <label for="emailInput">Email Address</label>
+                        <input 
+                            type="email" 
+                            id="emailInput" 
+                            name="email"
+                            placeholder="you@example.com"
+                            required
+                            class="email-input"
+                        />
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary full-width" id="sendEmailBtn">
+                        <span id="emailBtnText">Continue with Email</span>
+                        <span id="emailBtnLoading" style="display: none;">
+                            <span class="spinner"></span> Sending...
+                        </span>
+                    </button>
+                </form>
+                
+                <div class="auth-info" style="margin-top: 1.5rem;">
+                    <p>✓ No password required</p>
+                    <p>✓ Secure magic link sent to your inbox</p>
+                </div>
             </div>
         </div>
     </div>

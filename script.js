@@ -113,7 +113,7 @@ class SubscriberManager {
     }
 
     // Connect wallet using Privy or demo mode
-    async connectWallet(method = 'wallet') {
+    async connectWallet(method = 'wallet', email = null) {
         // Try to use Privy if available
         if (privyClient) {
             try {
@@ -135,9 +135,12 @@ class SubscriberManager {
         console.log('📝 Using demo mode authentication');
         return new Promise((resolve) => {
             setTimeout(() => {
-                const mockAddress = '0x' + this.generateMockAddress();
+                const mockAddress = method === 'email' && email ? 
+                    'email_' + email.split('@')[0] + '_' + Date.now() :
+                    '0x' + this.generateMockAddress();
                 const user = {
                     address: mockAddress,
+                    email: email || undefined,
                     method: method,
                     connectedAt: new Date().toISOString(),
                     subscriptions: {
@@ -146,13 +149,13 @@ class SubscriberManager {
                         specialMixes: false,
                         weeklyDigest: false
                     },
-                    notificationMethod: 'email'
+                    notificationMethod: email ? 'email' : 'wallet'
                 };
                 this.currentUser = user;
                 localStorage.setItem('aura_current_user', JSON.stringify(user));
                 this.addSubscriber(user);
                 resolve(user);
-            }, 1000);
+            }, 1500);
         });
     }
 
@@ -351,6 +354,15 @@ document.addEventListener('DOMContentLoaded', async function() {
     const emailLoginBtn = document.getElementById('emailLoginBtn');
     const socialLoginBtn = document.getElementById('socialLoginBtn');
     const saveSubscriptionBtn = document.getElementById('saveSubscriptionBtn');
+    
+    // Email form elements
+    const authOptionsView = document.getElementById('authOptionsView');
+    const emailFormView = document.getElementById('emailFormView');
+    const backToOptions = document.getElementById('backToOptions');
+    const emailLoginForm = document.getElementById('emailLoginForm');
+    const emailInput = document.getElementById('emailInput');
+    const emailBtnText = document.getElementById('emailBtnText');
+    const emailBtnLoading = document.getElementById('emailBtnLoading');
 
     // Profile widget elements
     const profileBtn = document.getElementById('profileBtn');
@@ -377,22 +389,71 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
 
     // Close modal buttons
-    closeAuthModal?.addEventListener('click', () => closeModal(authModal));
+    closeAuthModal?.addEventListener('click', () => {
+        closeModal(authModal);
+        showAuthOptions(); // Reset to options view
+    });
     closeSubscriptionModal?.addEventListener('click', () => closeModal(subscriptionModal));
 
     // Close modal on outside click
     authModal?.addEventListener('click', (e) => {
-        if (e.target === authModal) closeModal(authModal);
+        if (e.target === authModal) {
+            closeModal(authModal);
+            showAuthOptions(); // Reset to options view
+        }
     });
     subscriptionModal?.addEventListener('click', (e) => {
         if (e.target === subscriptionModal) closeModal(subscriptionModal);
     });
+
+    // Toggle between auth options and email form
+    function showAuthOptions() {
+        authOptionsView.style.display = 'block';
+        emailFormView.style.display = 'none';
+        emailInput.value = ''; // Clear email input
+    }
+
+    function showEmailForm() {
+        authOptionsView.style.display = 'none';
+        emailFormView.style.display = 'block';
+        // Focus on email input after a short delay
+        setTimeout(() => emailInput.focus(), 100);
+    }
+
+    // Back button in email form
+    backToOptions?.addEventListener('click', () => {
+        showAuthOptions();
+    });
+
+    // Email authentication handler
+    async function handleEmailAuth(email) {
+        try {
+            showNotification('Sending magic link...');
+            
+            const user = await subscriberManager.connectWallet('email', email);
+            
+            closeModal(authModal);
+            showAuthOptions(); // Reset view
+            
+            // Show subscription modal
+            openModal(subscriptionModal);
+            
+            // Load current preferences
+            loadSubscriptionPreferences();
+            
+            showNotification('✅ Signed in successfully!');
+        } catch (error) {
+            console.error('Email authentication error:', error);
+            showNotification('❌ Authentication failed. Please try again.');
+        }
+    }
 
     // Wallet connection methods
     async function handleWalletConnect(method) {
         try {
             showNotification('Connecting wallet...');
             closeModal(authModal);
+            showAuthOptions(); // Reset view
             
             const user = await subscriberManager.connectWallet(method);
             
@@ -410,8 +471,35 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     connectWalletBtn?.addEventListener('click', () => handleWalletConnect('wallet'));
-    emailLoginBtn?.addEventListener('click', () => handleWalletConnect('email'));
+    emailLoginBtn?.addEventListener('click', () => {
+        // Show email input form instead of directly connecting
+        showEmailForm();
+    });
     socialLoginBtn?.addEventListener('click', () => handleWalletConnect('social'));
+
+    // Handle email form submission
+    emailLoginForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        if (!email) {
+            showNotification('❌ Please enter a valid email');
+            return;
+        }
+
+        // Show loading state
+        emailBtnText.style.display = 'none';
+        emailBtnLoading.style.display = 'inline-flex';
+        
+        try {
+            // Attempt email authentication
+            await handleEmailAuth(email);
+        } finally {
+            // Reset button state
+            emailBtnText.style.display = 'inline';
+            emailBtnLoading.style.display = 'none';
+        }
+    });
 
     // Load subscription preferences into form
     function loadSubscriptionPreferences() {

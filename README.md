@@ -46,7 +46,9 @@ A modern, beautiful online radio streaming web application inspired by The Lot R
    - Set your notification preferences
    - Start listening!
 
-**See `DEMO_GUIDE.md` for detailed testing instructions.**
+⚠️ **Note:** Real wallet connections (MetaMask, Rainbow, etc.) require Privy dashboard configuration first.  
+📚 **See `WALLET_SETUP_GUIDE.md` for 5-minute setup instructions.**  
+🎮 **Demo mode** works automatically for testing UI/UX.
 
 ## 🎵 Changing the Livestream
 

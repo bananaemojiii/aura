@@ -892,6 +892,81 @@ body {
     margin: 0;
 }
 
+/* Email Form Styles */
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    transition: color 0.3s ease;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.back-btn:hover {
+    color: var(--text-primary);
+}
+
+.email-form {
+    margin-top: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.email-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: var(--dark-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.email-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.email-input::placeholder {
+    color: var(--text-muted);
+}
+
+.spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 /* Subscription Modal Styles */
 .subscription-success {
     text-align: center;
