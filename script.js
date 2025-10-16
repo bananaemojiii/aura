@@ -222,11 +222,13 @@ class SubscriberManager {
     updateUIForConnectedUser() {
         if (!this.currentUser) return;
         
-        // Hide connect button, show profile widget
+        // Hide connect buttons, show profile widget
         const navConnectBtn = document.getElementById('navConnectBtn');
+        const mobileConnectBtn = document.getElementById('mobileConnectBtn');
         const profileWidget = document.getElementById('profileWidget');
         
         if (navConnectBtn) navConnectBtn.style.display = 'none';
+        if (mobileConnectBtn) mobileConnectBtn.style.display = 'none';
         if (profileWidget) {
             profileWidget.style.display = 'block';
             
@@ -245,9 +247,11 @@ class SubscriberManager {
     // Update UI for disconnected user
     updateUIForDisconnectedUser() {
         const navConnectBtn = document.getElementById('navConnectBtn');
+        const mobileConnectBtn = document.getElementById('mobileConnectBtn');
         const profileWidget = document.getElementById('profileWidget');
         
         if (navConnectBtn) navConnectBtn.style.display = 'block';
+        if (mobileConnectBtn) mobileConnectBtn.style.display = 'block';
         if (profileWidget) profileWidget.style.display = 'none';
     }
 
@@ -383,9 +387,20 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.body.style.overflow = '';
     }
 
-    // Connect wallet button in nav
+    // Connect wallet buttons (desktop and mobile)
+    const mobileConnectBtn = document.getElementById('mobileConnectBtn');
+    
     navConnectBtn?.addEventListener('click', () => {
         openModal(authModal);
+    });
+    
+    mobileConnectBtn?.addEventListener('click', () => {
+        openModal(authModal);
+        mobileMenu.style.display = 'none'; // Close mobile menu
+        const spans = hamburger.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
     });
 
     // Close modal buttons
@@ -769,11 +784,11 @@ function showNotification(message) {
 function updateNowPlaying() {
     const nowPlayingText = document.getElementById('nowPlaying');
     const tracks = [
-        'Chillhop Radio - jazzy & lofi hip hop beats',
-        'Late Night Study Session - Ambient Sounds',
-        'Coffee Shop Vibes - Acoustic Mix',
-        'Downtown Groove - Electronic Jazz',
-        'Midnight Drive - Synthwave Collection'
+        'Fast-paced video content - 90s style',
+        'Underground Visual Culture - Raw & Unfiltered',
+        'Experimental Video Art - Cutting Edge',
+        'Street Style Cinematics - Urban Vibes',
+        '90s Throwback Aesthetics - Retro Energy'
     ];
     
     let currentIndex = 0;

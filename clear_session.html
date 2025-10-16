@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Session - Aura Radio</title>
+    <style>
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 24px;
+            padding: 3rem;
+            text-align: center;
+        }
+        h1 {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+        p {
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #334155;
+        }
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #0f172a;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Clear Session</h1>
+        <p>If you can't see the "Connect Wallet" button, you might have a saved session. Click below to clear it and start fresh.</p>
+        
+        <button class="btn" onclick="clearSession()">Clear Session</button>
+        <button class="btn btn-secondary" onclick="goBack()">Go Back</button>
+        
+        <div class="status" id="status" style="display: none;"></div>
+    </div>
+
+    <script>
+        function clearSession() {
+            const status = document.getElementById('status');
+            
+            try {
+                // Clear all localStorage
+                localStorage.clear();
+                
+                // Show success message
+                status.style.display = 'block';
+                status.innerHTML = `
+✅ Session cleared successfully!<br><br>
+Cleared items:<br>
+• aura_current_user<br>
+• aura_subscribers<br>
+• All cached data<br><br>
+Redirecting to homepage...
+                `;
+                
+                // Redirect to homepage after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+                
+            } catch (error) {
+                status.style.display = 'block';
+                status.style.color = '#ef4444';
+                status.innerHTML = '❌ Error clearing session: ' + error.message;
+            }
+        }
+        
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
+

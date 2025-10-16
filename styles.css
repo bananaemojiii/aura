@@ -41,7 +41,7 @@ body {
     right: 0;
     background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(10px);
-    z-index: 1000;
+    z-index: 10000;
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -138,17 +138,36 @@ body {
     font-weight: 500;
 }
 
+.mobile-connect-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-top: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.mobile-connect-btn:hover {
+    transform: translateY(-2px);
+}
+
 /* Hero Section */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh - 100px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 8rem 2rem 4rem;
+    padding: 6rem 2rem 4rem;
     background: linear-gradient(180deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
     position: relative;
     overflow: hidden;
+    margin-top: -100px;
 }
 
 .hero::before {
@@ -1137,9 +1156,9 @@ body {
 /* Profile Widget */
 .profile-widget {
     position: fixed;
-    top: 1rem;
+    top: 1.25rem;
     right: 2rem;
-    z-index: 999;
+    z-index: 10001; /* Above navbar */
 }
 
 .profile-btn {
