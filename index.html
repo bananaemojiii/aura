@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Auth Modal -->
@@ -105,57 +105,12 @@
             </div>
             
             <div class="subscription-form">
-                <h3>Subscribe to Content Updates</h3>
-                <p>Get notified about our best videos and special releases</p>
-                
-                <div class="subscription-options">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="newShowsNotif" checked>
-                        <span class="checkmark"></span>
-                        <span>New Videos & Creators</span>
-                    </label>
-                    
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="liveEventsNotif" checked>
-                        <span class="checkmark"></span>
-                        <span>Live Streams & Premieres</span>
-                    </label>
-                    
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="specialMixesNotif">
-                        <span class="checkmark"></span>
-                        <span>Special Releases & Exclusives</span>
-                    </label>
-                    
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="weeklyDigestNotif">
-                        <span class="checkmark"></span>
-                        <span>Weekly Content Digest</span>
-                    </label>
-                </div>
-                
-                <div class="notification-method">
-                    <h4>Notification Method</h4>
-                    <select id="notificationMethod" class="notification-select">
-                        <option value="email">Email</option>
-                        <option value="wallet">Wallet Notification</option>
-                        <option value="both">Both</option>
-                    </select>
-                </div>
+                <h3>Subscribe to Livestream</h3>
+                <p>Get notified when we go live</p>
                 
                 <button class="btn btn-primary full-width" id="saveSubscriptionBtn">
-                    Save Preferences
+                    Subscribe
                 </button>
-                
-                <div class="subscriber-perks">
-                    <h4>Subscriber Perks</h4>
-                    <ul>
-                        <li>🎬 Early access to exclusive videos</li>
-                        <li>🎟️ Priority access to live streams</li>
-                        <li>💎 Special NFT drops for loyal viewers</li>
-                        <li>🎁 Monthly giveaways and contests</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -208,9 +163,6 @@
         <div class="nav-content">
             <div class="logo">AURA</div>
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#schedule">Schedule</a>
-                <a href="#support">Support</a>
                 <button class="nav-cta" id="navConnectBtn">Connect Wallet</button>
             </div>
             <div class="hamburger" id="hamburger">
@@ -223,9 +175,6 @@
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-        <a href="#about">About</a>
-        <a href="#schedule">Schedule</a>
-        <a href="#support">Support</a>
         <button class="mobile-connect-btn" id="mobileConnectBtn">Connect Wallet</button>
     </div>
 
@@ -240,135 +189,6 @@
 
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="about-content">
-                <h2 class="section-title">About Aura</h2>
-                <p class="about-text">
-                    We are an independent, non-profit video streaming platform bringing you fast-paced, high-energy content 24/7. 
-                    Experience the raw, unfiltered vibe of 90s video culture with cutting-edge visual storytelling.
-                </p>
-                <p class="about-text">
-                    Our mission is to create a space where visual culture thrives. From underground creators to emerging artists, 
-                    we showcase bold, experimental video content that pushes boundaries and challenges the mainstream.
-                </p>
-                <div class="about-cta">
-                    <a href="#support" class="btn btn-primary">Support Our Station</a>
-                    <a href="#schedule" class="btn btn-secondary">View Schedule</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Features Grid -->
-    <section class="features-section">
-        <div class="container">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📹</div>
-                    <h3>Fast-Paced Videos</h3>
-                    <p>High-energy visual content from underground creators and emerging artists</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>Global Platform</h3>
-                    <p>Broadcasting worldwide, connecting viewers from every corner of the globe</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📺</div>
-                    <h3>90s Vibes</h3>
-                    <p>Raw, unfiltered 90s-style content with modern edge and attitude</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💜</div>
-                    <h3>Community Driven</h3>
-                    <p>Built by and for visual culture enthusiasts, supporting independent creators</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Schedule Section -->
-    <section id="schedule" class="schedule-section">
-        <div class="container">
-            <h2 class="section-title">Weekly Schedule</h2>
-            <div class="schedule-grid">
-                <div class="schedule-item">
-                    <div class="schedule-day">Monday</div>
-                    <div class="schedule-show">
-                        <span class="show-time">12:00 AM - 6:00 AM</span>
-                        <span class="show-name">Midnight Groove</span>
-                    </div>
-                    <div class="schedule-show">
-                        <span class="show-time">6:00 AM - 12:00 PM</span>
-                        <span class="show-name">Morning Mix</span>
-                    </div>
-                    <div class="schedule-show">
-                        <span class="show-time">12:00 PM - 6:00 PM</span>
-                        <span class="show-name">Afternoon Vibes</span>
-                    </div>
-                    <div class="schedule-show">
-                        <span class="show-time">6:00 PM - 12:00 AM</span>
-                        <span class="show-name">Evening Sessions</span>
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="schedule-day">Tuesday - Thursday</div>
-                    <div class="schedule-description">
-                        Rotating guest DJs and special programming. Check our social media for daily updates.
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="schedule-day">Friday</div>
-                    <div class="schedule-description">
-                        Weekend warmup with extended sets and live performances.
-                    </div>
-                </div>
-                <div class="schedule-item">
-                    <div class="schedule-day">Saturday - Sunday</div>
-                    <div class="schedule-description">
-                        Special weekend programming featuring local and international artists.
-                    </div>
-                </div>
-            </div>
-            <div class="schedule-cta">
-                <p>Want to host a show?</p>
-                <button class="btn btn-primary">Submit Show Proposal</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Support Section -->
-    <section id="support" class="support-section">
-        <div class="container">
-            <div class="support-content">
-                <h2 class="section-title">Support Aura</h2>
-                <p class="support-text">
-                    As an independent, non-profit video platform, we rely on the support of our community to keep the content flowing. 
-                    Your contributions help us maintain our infrastructure, support creators fairly, and continue bringing you cutting-edge visual content 24/7.
-                </p>
-                <div class="support-options">
-                    <div class="support-card">
-                        <h3>One-Time Donation</h3>
-                        <p>Support us with a single contribution</p>
-                        <button class="btn btn-primary">Donate Now</button>
-                    </div>
-                    <div class="support-card featured">
-                        <h3>Monthly Supporter</h3>
-                        <p>Become a recurring supporter and get exclusive perks</p>
-                        <button class="btn btn-primary">Join Now</button>
-                    </div>
-                    <div class="support-card">
-                        <h3>Visit Our Shop</h3>
-                        <p>Get merch and support the station</p>
-                        <button class="btn btn-secondary">Shop Now</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -376,24 +196,6 @@
                 <div class="footer-section">
                     <h3>AURA</h3>
                     <p>Independent video streaming platform 24/7</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Links</h4>
-                    <a href="#about">About</a>
-                    <a href="#schedule">Schedule</a>
-                    <a href="#support">Support</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Connect</h4>
-                    <a href="#">Instagram</a>
-                    <a href="#">Twitter</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">Mixcloud</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <a href="#">info@aura.tv</a>
-                    <a href="#">Submit Content</a>
                 </div>
             </div>
             <div class="footer-bottom">

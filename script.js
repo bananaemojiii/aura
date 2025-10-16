@@ -77,12 +77,9 @@ function handlePrivySuccess(user) {
         connectedAt: new Date().toISOString(),
         email: user.email?.address,
         subscriptions: {
-            newShows: true,
-            liveEvents: true,
-            specialMixes: false,
-            weeklyDigest: false
+            livestream: true
         },
-        notificationMethod: user.email?.address ? 'email' : 'wallet'
+        notificationMethod: 'email'
     };
     
     subscriberManager.currentUser = userData;
@@ -144,12 +141,9 @@ class SubscriberManager {
                     method: method,
                     connectedAt: new Date().toISOString(),
                     subscriptions: {
-                        newShows: true,
-                        liveEvents: true,
-                        specialMixes: false,
-                        weeklyDigest: false
+                        livestream: true
                     },
-                    notificationMethod: email ? 'email' : 'wallet'
+                    notificationMethod: 'email'
                 };
                 this.currentUser = user;
                 localStorage.setItem('aura_current_user', JSON.stringify(user));
@@ -266,10 +260,7 @@ class SubscriberManager {
         const subscribers = this.getSubscribers();
         return {
             total: subscribers.length,
-            newShows: subscribers.filter(s => s.subscriptions?.newShows).length,
-            liveEvents: subscribers.filter(s => s.subscriptions?.liveEvents).length,
-            specialMixes: subscribers.filter(s => s.subscriptions?.specialMixes).length,
-            weeklyDigest: subscribers.filter(s => s.subscriptions?.weeklyDigest).length
+            livestream: subscribers.filter(s => s.subscriptions?.livestream).length
         };
     }
 }
@@ -517,31 +508,21 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     // Load subscription preferences into form
     function loadSubscriptionPreferences() {
-        if (!subscriberManager.currentUser) return;
-        
-        const subs = subscriberManager.currentUser.subscriptions;
-        document.getElementById('newShowsNotif').checked = subs.newShows;
-        document.getElementById('liveEventsNotif').checked = subs.liveEvents;
-        document.getElementById('specialMixesNotif').checked = subs.specialMixes;
-        document.getElementById('weeklyDigestNotif').checked = subs.weeklyDigest;
-        document.getElementById('notificationMethod').value = subscriberManager.currentUser.notificationMethod;
+        // Simplified - no form to load
     }
 
     // Save subscription preferences
     saveSubscriptionBtn?.addEventListener('click', () => {
         const preferences = {
             subscriptions: {
-                newShows: document.getElementById('newShowsNotif').checked,
-                liveEvents: document.getElementById('liveEventsNotif').checked,
-                specialMixes: document.getElementById('specialMixesNotif').checked,
-                weeklyDigest: document.getElementById('weeklyDigestNotif').checked
+                livestream: true
             },
-            notificationMethod: document.getElementById('notificationMethod').value
+            notificationMethod: 'email'
         };
         
         subscriberManager.updatePreferences(preferences);
         closeModal(subscriptionModal);
-        showNotification('✅ Subscription preferences saved!');
+        showNotification('✅ Subscribed to livestream!');
         
         // Log stats to console
         const stats = subscriberManager.getStats();
